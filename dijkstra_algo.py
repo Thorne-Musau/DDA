@@ -40,7 +40,7 @@ graph = {
 }
 
 # Specify the start node
-start_node = 'A'
+start_node = input(print("Enter the start node: "))
 
 # Run Dijkstra's algorithm
 distances, predecessors = dijkstra(graph, start_node)
