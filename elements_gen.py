@@ -1,3 +1,10 @@
+# Group Members:
+# Caleb Mabuka: CIT-227-030/2021
+# Joram Kariuki: CIT-227-009/2021
+# JohnMark Wanjugu: CIT-227-008/2021
+# Thorne Musau: CIT-227-029/2021
+
+
 import numpy as np
 
 # Specify the file path
