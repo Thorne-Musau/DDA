@@ -1,111 +1,73 @@
-# Python program for Kruskal's algorithm to find 
-# Minimum Spanning Tree of a given connected, 
-# undirected and weighted graph 
-
-
-# Class to represent a graph 
 class Graph: 
+    def __init__(self, vertices): 
+        self.V = vertices 
+        self.graph = [] 
+        self.label_to_index = {}
 
-	def __init__(self, vertices): 
-		self.V = vertices 
-		self.graph = [] 
+    def addEdge(self, u, v, w): 
+        # Map node labels to integers
+        if u not in self.label_to_index:
+            self.label_to_index[u] = len(self.label_to_index)
+        if v not in self.label_to_index:
+            self.label_to_index[v] = len(self.label_to_index)
+        
+        self.graph.append([self.label_to_index[u], self.label_to_index[v], w]) 
 
-	# Function to add an edge to graph 
-	def addEdge(self, u, v, w): 
-		self.graph.append([u, v, w]) 
+    def find(self, parent, i): 
+        if parent[i] != i: 
+            parent[i] = self.find(parent, parent[i]) 
+        return parent[i] 
 
-	# A utility function to find set of an element i 
-	# (truly uses path compression technique) 
-	def find(self, parent, i): 
-		if parent[i] != i: 
+    def union(self, parent, rank, x, y): 
+        if rank[x] < rank[y]: 
+            parent[x] = y 
+        elif rank[x] > rank[y]: 
+            parent[y] = x 
+        else: 
+            parent[y] = x 
+            rank[x] += 1
 
-			# Reassignment of node's parent 
-			# to root node as 
-			# path compression requires 
-			parent[i] = self.find(parent, parent[i]) 
-		return parent[i] 
+    def KruskalMST(self): 
+        result = [] 
+        i = 0
+        e = 0
+        self.graph = sorted(self.graph, key=lambda item: item[2]) 
+        parent = [] 
+        rank = [] 
 
-	# A function that does union of two sets of x and y 
-	# (uses union by rank) 
-	def union(self, parent, rank, x, y): 
+        for node in range(self.V): 
+            parent.append(node) 
+            rank.append(0) 
 
-		# Attach smaller rank tree under root of 
-		# high rank tree (Union by Rank) 
-		if rank[x] < rank[y]: 
-			parent[x] = y 
-		elif rank[x] > rank[y]: 
-			parent[y] = x 
+        while e < self.V - 1: 
+            u, v, w = self.graph[i] 
+            i = i + 1
+            x = self.find(parent, u) 
+            y = self.find(parent, v) 
 
-		# If ranks are same, then make one as root 
-		# and increment its rank by one 
-		else: 
-			parent[y] = x 
-			rank[x] += 1
+            if x != y: 
+                e = e + 1
+                result.append([u, v, w]) 
+                self.union(parent, rank, x, y) 
 
-	# The main function to construct MST 
-	# using Kruskal's algorithm 
-	def KruskalMST(self): 
-
-		# This will store the resultant MST 
-		result = [] 
-
-		# An index variable, used for sorted edges 
-		i = 0
-
-		# An index variable, used for result[] 
-		e = 0
-
-		# Sort all the edges in 
-		# non-decreasing order of their 
-		# weight 
-		self.graph = sorted(self.graph, 
-							key=lambda item: item[2]) 
-
-		parent = [] 
-		rank = [] 
-
-		# Create V subsets with single elements 
-		for node in range(self.V): 
-			parent.append(node) 
-			rank.append(0) 
-
-		# Number of edges to be taken is less than to V-1 
-		while e < self.V - 1: 
-
-			# Pick the smallest edge and increment 
-			# the index for next iteration 
-			u, v, w = self.graph[i] 
-			i = i + 1
-			x = self.find(parent, u) 
-			y = self.find(parent, v) 
-
-			# If including this edge doesn't 
-			# cause cycle, then include it in result 
-			# and increment the index of result 
-			# for next edge 
-			if x != y: 
-				e = e + 1
-				result.append([u, v, w]) 
-				self.union(parent, rank, x, y) 
-			# Else discard the edge 
-
-		minimumCost = 0
-		print("Edges in the constructed MST") 
-		for u, v, weight in result: 
-			minimumCost += weight 
-			print("%d -- %d == %d" % (u, v, weight)) 
-		print("Minimum Spanning Tree", minimumCost) 
-
+        minimumCost = 0
+        print("Edges in the constructed MST") 
+        for u, v, weight in result: 
+            # Print the original node labels
+            u_label = next(key for key, value in self.label_to_index.items() if value == u)
+            v_label = next(key for key, value in self.label_to_index.items() if value == v)
+            minimumCost += weight 
+            print(f"{u_label} -- {v_label} == {weight}") 
+        print("Minimum Spanning Tree", minimumCost) 
 
 # Driver code 
 if __name__ == '__main__': 
-	g = Graph(4) 
-	g.addEdge(0, 1, 10) 
-	g.addEdge(0, 2, 6) 
-	g.addEdge(0, 3, 5) 
-	g.addEdge(1, 3, 15) 
-	g.addEdge(2, 3, 4) 
-
-	# Function call 
-	g.KruskalMST() 
-
+    g = Graph(6)
+    g.addEdge("A", "B", 3)
+    g.addEdge("A", "C", 1)
+    g.addEdge("A", "D", 4)
+    g.addEdge("C", "F", 3)
+    g.addEdge("F", "E", 2)
+    g.addEdge("B", "E", 3)
+    
+    g.KruskalMST() 
