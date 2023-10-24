@@ -9,6 +9,6 @@ These projects are done under the guidance of the DAA LAB 1.pdf document provide
 * Quicksort Algorithm
 * Merge Sort Algorithm
 * Tree Traversals
-   ->Inorder traversal
+   -> Inorder traversal
    -> Preorder traversal
 * 
