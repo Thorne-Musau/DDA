@@ -32,7 +32,7 @@ def printInorder(root):
 
 
 # Driver code
-# Changed values of the alphabets to their corresponding numerical values
+# Replaced values of the alphabets to their corresponding numerical values
 if __name__ == "__main__":
 	root = Node(1)
 	root.left = Node(2)
